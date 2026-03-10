@@ -1,0 +1,19 @@
+{
+  "student_name": "Elliot Wong",
+  "agent_name": "Game Theory Expert",
+  "genes": [
+    0.9389624070368141,
+    0.8466237970692667,
+    0.6850814083101485,
+    0.6827145135629931,
+    0.49972859880633247,
+    0.6100602346891759
+  ],
+  "description": "Forgiving variant - Cooperative with high forgiveness",
+  "strategy_archetype": "Forgiving",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.25874350928200696,
+  "generalization_win_rate": 0.3590624247324775
+}

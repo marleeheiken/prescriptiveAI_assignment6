@@ -1,0 +1,61 @@
+MULTI-OBJECTIVE OPTIMIZATION WAREHOUSE SIMULATION
+==================================================
+
+OVERVIEW:
+This simulation demonstrates Pareto frontier optimization in warehouse operations using
+wage-productivity tradeoffs. The system tests 24 different wage levels ($0.15-$0.84)
+with multiple episodes each to show the relationship between worker pay, productivity,
+service quality, and profit.
+
+SETUP AND EXECUTION:
+====================
+
+1. Navigate to the simulation directory:
+   cd "/Users/douglasdahl/Desktop/AAI IV/Act 3/warehouse_rl"
+
+2. Run the comprehensive multi-objective demonstration:
+   python multi_objective_demo.py
+
+3. View the generated Pareto frontier scatterplot:
+   open wage_productivity_scatterplot.png
+
+WHAT YOU'LL SEE:
+================
+- 24 different wage levels tested with 5 episodes each (120 total runs)
+- Statistical reliability through multiple runs per wage level
+- Color-coded scatterplot: blue=low wages, red=high wages
+- Black Pareto frontier line showing optimal tradeoff curve
+- Yellow circles highlighting Pareto-optimal points
+- Gold star marking the single best profit-maximizing wage
+- Detailed analysis table with efficiency metrics
+
+EXPECTED RUNTIME: 8-12 minutes (24 wage levels × 5 episodes each)
+
+WAGE-PRODUCTIVITY SYSTEM:
+=========================
+- Worker speed scales with wage: higher pay = faster movement and task completion
+- Speed multiplier ranges from 0.6x (at $0.15) to 1.5x (at $0.84)
+- Each wage level represents a different strategic choice
+- Multiple episodes capture the stochastic nature of the simulation
+
+PARETO FRONTIER:
+===============
+The black line shows points where you cannot improve both profit AND service
+simultaneously - any improvement in one requires sacrificing the other.
+Points below this line are suboptimal (dominated solutions).
+
+REFLECTION ASSIGNMENT:
+======================
+After running the simulation, write a 2-paragraph reflection addressing:
+
+1. How the Pareto frontier reveals the fundamental tradeoff between wage costs and
+   productivity gains, and what the shape of the frontier tells us about diminishing
+   returns in worker compensation.
+
+2. Why certain wage levels appear on the Pareto frontier while others don't, and
+   what this teaches about finding optimal solutions in multi-objective optimization
+   problems with complex, non-linear relationships.
+
+Include observations about whether the highest-paid workers always deliver the best
+results, and what the "sweet spot" analysis reveals about real-world management
+decisions.

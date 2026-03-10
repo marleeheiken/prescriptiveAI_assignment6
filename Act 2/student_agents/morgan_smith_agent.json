@@ -1,0 +1,19 @@
+{
+  "student_name": "Morgan Smith",
+  "agent_name": "Adaptive Survivor",
+  "genes": [
+    0.2413925576628696,
+    0.436243562465609,
+    0.8012731428614689,
+    0.0,
+    0.72843356419869,
+    0.31330816518005733
+  ],
+  "description": "Aggressive variant - Quick to defect, slow to forgive",
+  "strategy_archetype": "Aggressive",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.5111062695711972,
+  "generalization_win_rate": 0.5828706308636126
+}

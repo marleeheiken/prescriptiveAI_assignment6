@@ -1,0 +1,19 @@
+{
+  "student_name": "Bailey Gonzalez",
+  "agent_name": "Risk Manager",
+  "genes": [
+    0.6229473408679311,
+    0.8781814488114598,
+    0.8061272762922161,
+    0.3084984044137251,
+    0.5043829275028314,
+    0.479374082323868
+  ],
+  "description": "Balanced variant - Well-rounded cooperative strategy",
+  "strategy_archetype": "Balanced",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.4986521565120258,
+  "generalization_win_rate": 0.18393302860332125
+}

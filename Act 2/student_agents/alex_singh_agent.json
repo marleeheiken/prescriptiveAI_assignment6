@@ -1,0 +1,19 @@
+{
+  "student_name": "Alex Singh",
+  "agent_name": "Relationship Keeper",
+  "genes": [
+    0.7416240849130904,
+    0.9537636091509853,
+    1.0,
+    0.0,
+    0.7683454836988294,
+    0.0378454555233403
+  ],
+  "description": "Grudge Holder variant - Never forgives betrayal",
+  "strategy_archetype": "Grudge Holder",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.46880001394138143,
+  "generalization_win_rate": 0.42670305546227905
+}

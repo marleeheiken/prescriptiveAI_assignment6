@@ -1,0 +1,12 @@
+{
+  "name": "My Evolved Agent",
+  "genes": [
+    1.0,
+    1.0,
+    0.48133874186118913,
+    0.0,
+    0.3454967235855081,
+    0.9359113580017795
+  ],
+  "description": "A short description of your agent's general strategy"
+}

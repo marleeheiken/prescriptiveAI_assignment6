@@ -1,0 +1,19 @@
+{
+  "student_name": "Hayden Gonzalez",
+  "agent_name": "Equilibrium Finder",
+  "genes": [
+    0.8482505505463198,
+    0.7998346421129932,
+    0.612066314194502,
+    0.7827515324037815,
+    0.4022136614658589,
+    0.45625127508599217
+  ],
+  "description": "Forgiving variant - Cooperative with high forgiveness",
+  "strategy_archetype": "Forgiving",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.36732133868613037,
+  "generalization_win_rate": 0.6507102983121738
+}

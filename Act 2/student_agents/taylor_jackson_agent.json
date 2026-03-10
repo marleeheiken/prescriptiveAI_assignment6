@@ -1,0 +1,19 @@
+{
+  "student_name": "Taylor Jackson",
+  "agent_name": "Opportunist Prime",
+  "genes": [
+    0.5659365658878577,
+    0.9207533215967679,
+    0.972092202290888,
+    0.20646921022002773,
+    0.8137115337708105,
+    0.22584283774663672
+  ],
+  "description": "Cautious variant - Starts neutral, strongly reciprocates",
+  "strategy_archetype": "Cautious",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.23543755353488183,
+  "generalization_win_rate": 0.39436205511351885
+}

@@ -1,0 +1,19 @@
+{
+  "student_name": "Jesse Garcia",
+  "agent_name": "Cooperative Hawk",
+  "genes": [
+    0.4034225271036055,
+    0.7207623580846272,
+    0.8971627654913354,
+    0.3542718626365262,
+    0.931473249802661,
+    0.3037623703621142
+  ],
+  "description": "Cautious variant - Starts neutral, strongly reciprocates",
+  "strategy_archetype": "Cautious",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.5261619646582006,
+  "generalization_win_rate": 0.7094617921146323
+}

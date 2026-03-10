@@ -1,0 +1,19 @@
+{
+  "student_name": "Elliot Lopez",
+  "agent_name": "Betrayal Detector",
+  "genes": [
+    0.7327394883270851,
+    0.7089450119220111,
+    0.816394392365087,
+    0.4239532236374447,
+    0.5327135658985486,
+    0.632688737454057
+  ],
+  "description": "Balanced variant - Well-rounded cooperative strategy",
+  "strategy_archetype": "Balanced",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.5967205273500977,
+  "generalization_win_rate": 0.5123003799493105
+}

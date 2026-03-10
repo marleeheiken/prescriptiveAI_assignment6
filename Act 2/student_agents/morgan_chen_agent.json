@@ -1,0 +1,19 @@
+{
+  "student_name": "Morgan Chen",
+  "agent_name": "Reputation Defender",
+  "genes": [
+    0.6281809399233622,
+    0.9304863674433503,
+    0.6499729993198834,
+    0.27645057829804015,
+    0.6429080870026175,
+    0.43895826694600876
+  ],
+  "description": "Balanced variant - Well-rounded cooperative strategy",
+  "strategy_archetype": "Balanced",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.35928187016364865,
+  "generalization_win_rate": 0.32378353141010185
+}

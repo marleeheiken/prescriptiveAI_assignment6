@@ -1,0 +1,19 @@
+{
+  "student_name": "Finley Lee",
+  "agent_name": "Strategic Dove",
+  "genes": [
+    0.3319989478717046,
+    0.3673189804030865,
+    0.8492568257379928,
+    0.08057698455108127,
+    0.4860583037137515,
+    0.3515400262987351
+  ],
+  "description": "Aggressive variant - Quick to defect, slow to forgive",
+  "strategy_archetype": "Aggressive",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.46791329364811246,
+  "generalization_win_rate": 0.32108536595824744
+}

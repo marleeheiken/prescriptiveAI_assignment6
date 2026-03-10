@@ -1,0 +1,19 @@
+{
+  "student_name": "Taylor Gonzalez",
+  "agent_name": "Nash Seeker",
+  "genes": [
+    0.3045846416237177,
+    0.32140907821298637,
+    0.8595005385433958,
+    0.11016767614181465,
+    0.570646376639524,
+    0.26965148910523695
+  ],
+  "description": "Aggressive variant - Quick to defect, slow to forgive",
+  "strategy_archetype": "Aggressive",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.2804185231957477,
+  "generalization_win_rate": 0.31959025154620435
+}

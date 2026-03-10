@@ -1,0 +1,19 @@
+{
+  "student_name": "Quinn Martin",
+  "agent_name": "Pattern Matcher",
+  "genes": [
+    1.0,
+    0.9613171671601899,
+    0.0,
+    0.9434926547333705,
+    0.4100700296847545,
+    0.5975104896395355
+  ],
+  "description": "Always Cooperate variant - Pure cooperator - always invests",
+  "strategy_archetype": "Always Cooperate",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.38167920729072286,
+  "generalization_win_rate": 0.45218793304316207
+}

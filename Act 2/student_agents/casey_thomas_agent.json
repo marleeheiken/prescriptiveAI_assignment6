@@ -1,0 +1,19 @@
+{
+  "student_name": "Casey Thomas",
+  "agent_name": "Stable Cooperator",
+  "genes": [
+    1.0,
+    1.0,
+    0.0,
+    0.6505088102665278,
+    0.5705997838435037,
+    0.4981900663720135
+  ],
+  "description": "Always Cooperate variant - Pure cooperator - always invests",
+  "strategy_archetype": "Always Cooperate",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.7047469464432632,
+  "generalization_win_rate": 0.2594687955365022
+}

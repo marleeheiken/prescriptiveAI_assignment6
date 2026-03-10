@@ -1,0 +1,19 @@
+{
+  "student_name": "Casey Wong",
+  "agent_name": "Balanced Trader",
+  "genes": [
+    0.872992600997186,
+    0.6990677198878716,
+    0.7806530472798755,
+    0.21400331207931506,
+    0.8361972886167272,
+    0.4801700718907404
+  ],
+  "description": "Opportunist variant - Tests opponents, exploits weakness",
+  "strategy_archetype": "Opportunist",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.6373675578513178,
+  "generalization_win_rate": 0.34754718575719545
+}

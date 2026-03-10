@@ -1,0 +1,19 @@
+{
+  "student_name": "Logan Brown",
+  "agent_name": "Profit Maximizer",
+  "genes": [
+    0.3794663870568183,
+    0.9176147803832704,
+    0.8378744785010687,
+    0.17657493154282666,
+    0.79808007936886,
+    0.19780078874323015
+  ],
+  "description": "Cautious variant - Starts neutral, strongly reciprocates",
+  "strategy_archetype": "Cautious",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.5839471077792613,
+  "generalization_win_rate": 0.6891545808096681
+}

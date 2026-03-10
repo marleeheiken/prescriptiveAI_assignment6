@@ -1,0 +1,19 @@
+{
+  "student_name": "Alex Brown",
+  "agent_name": "Trust Builder",
+  "genes": [
+    0.6390384806642889,
+    0.7529670455366964,
+    0.7892376034380038,
+    0.15067716254365604,
+    0.80264196641412,
+    0.10762245195814941
+  ],
+  "description": "Cautious variant - Starts neutral, strongly reciprocates",
+  "strategy_archetype": "Cautious",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.31196352268855865,
+  "generalization_win_rate": 0.4462193717509537
+}

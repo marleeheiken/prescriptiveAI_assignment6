@@ -1,0 +1,19 @@
+{
+  "student_name": "Jordan Thomas",
+  "agent_name": "Dynamic Responder",
+  "genes": [
+    0.6321590108265767,
+    0.696919831910871,
+    0.7838394713158615,
+    0.442483124186429,
+    0.6424916157933659,
+    0.5959954149465514
+  ],
+  "description": "Balanced variant - Well-rounded cooperative strategy",
+  "strategy_archetype": "Balanced",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.6360759598451771,
+  "generalization_win_rate": 0.298965981353888
+}

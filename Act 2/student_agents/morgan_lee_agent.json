@@ -1,0 +1,19 @@
+{
+  "student_name": "Morgan Lee",
+  "agent_name": "Chaos Agent",
+  "genes": [
+    0.8676765090533488,
+    0.9468446404795945,
+    0.8152012329238627,
+    0.27043819209142406,
+    0.5562317416568318,
+    0.6175399398143087
+  ],
+  "description": "Balanced variant - Well-rounded cooperative strategy",
+  "strategy_archetype": "Balanced",
+  "training_opponents": [
+    "Mock opponents"
+  ],
+  "training_win_rate": 0.5364537130993237,
+  "generalization_win_rate": 0.3635167703380524
+}
