@@ -40,6 +40,7 @@ class SkeletonOptimizationAgent(BaselineAgent):
         self.performance_metrics = []
         self.decision_history = []
         
+        self.integrated_metrics = []
         # Students can add algorithm parameters here
         # Example: Hungarian algorithm matrices, greedy search parameters, etc.
         self.staffing_parameters = {
@@ -59,8 +60,11 @@ class SkeletonOptimizationAgent(BaselineAgent):
         self.phase1_swap_count = 0
         self.phase2_swap_count = 0
         self.layout_metrics = []
+        self._profit_ema_short = None
+        self._profit_ema_long = None
         # TODO: Reset any neural network states, replay buffers, etc.
     
+    '''
     def get_action(self, observation: Dict) -> Dict:
         """
         Generate action based on observation.
@@ -86,6 +90,32 @@ class SkeletonOptimizationAgent(BaselineAgent):
         self.action_history.append(action.copy())
         
         return action
+    '''
+
+    def get_action(self, observation: Dict) -> Dict:
+        """
+        Week 2: Integrated optimization across staffing, layout, and order assignments
+        """
+        current_timestep = observation['time'][0]
+        financial_state = observation['financial']
+        queue_info = observation['order_queue']
+        employee_info = observation['employees']
+
+        # Compute actions
+        action = {
+            'staffing_action': self._get_naive_staffing_action(financial_state, employee_info),
+            'layout_swap': self._get_naive_layout_action(current_timestep),
+            'order_assignments': self._get_naive_order_assignments(queue_info, employee_info)
+        }
+
+        # Track integrated performance every 100 steps
+        if current_timestep % 100 == 0:
+            self.track_integrated_performance()
+
+        # Record action for later analysis
+        self.action_history.append(action.copy())
+
+        return action
     
     def _get_naive_staffing_action(self, financial_state, employee_info) -> int:
         """
@@ -95,29 +125,73 @@ class SkeletonOptimizationAgent(BaselineAgent):
         - Ignores queue length and workload
         - Random decisions regardless of profit
         - No consideration of employee efficiency
+
+        WEEK 2 STEP 1: Economic staffing optimization
+        Make hiring/firing decisions based on simple business economics
         """
         
-        # TODO WEEK 2 STEP 1: Students should implement intelligent staffing logic
-        # Current approach: Make random decisions based on "vibes"
-        
+        # Extract economic and operational data
         current_profit = financial_state[0]
-        num_employees = np.sum(employee_info[:, 0] > 0)  # Count active employees
+        revenue = financial_state[1]
+        costs = financial_state[2]
+        burn_rate = financial_state[3]
         
-        # Terrible logic: Random decisions with slight bias
-        # BUT: Hire managers more frequently so layout optimization can work
-        has_manager = np.any(employee_info[:, 5] == 1)  # Check if we have a manager
+        num_employees = np.sum(employee_info[:, 0] > 0)
+        queue_length = len(self.env.order_queue.orders)
+        has_manager = np.any(employee_info[:, 5] == 1)
         
-        if np.random.random() < 0.3:  # 30% chance to hire
-            if num_employees < 20:  # Don't go completely overboard
-                return 1  # Hire worker
-        elif np.random.random() < 0.1:  # 10% chance to fire
-            if num_employees > 1:  # Don't fire everyone
-                return 2  # Fire worker
-        elif np.random.random() < 0.2:  # 20% chance to hire manager (increased from 5%)
-            if not has_manager or num_employees > 10:  # Hire manager if we don't have one, or if we have lots of workers
-                return 3  # Hire manager
+        # TODO: Calculate business indicators
         
-        return 0  # No action
+        # Queue pressure (demand vs worker capacity)
+        queue_pressure = queue_length / max(1, num_employees)
+        
+        # Profit efficiency (how productive the workforce is)
+        profit_per_employee = current_profit / max(1, num_employees)
+        
+        # Track profit trend
+        if not hasattr(self, "profit_history"):
+            self.profit_history = []
+        self.profit_history.append(current_profit)
+        
+        profit_trend = 0
+        if len(self.profit_history) > 5:
+            recent_avg = np.mean(self.profit_history[-3:])
+            older_avg = np.mean(self.profit_history[-6:-3])
+            profit_trend = recent_avg - older_avg
+        
+        # Algorithm Parameters
+        hire_threshold = 3.0
+        fire_threshold = 1.5
+        
+        profit_threshold = 1000
+        manager_threshold = 2000
+        
+        min_staff = 2
+        if num_employees <= min_staff:
+            return 0  # Never fire below min_staff
+        
+
+        
+        # TODO: Apply economic decision logic        
+        # HIRE MANAGER when profitable and no manager exists
+        if current_profit > manager_threshold and not has_manager:
+            return 2  # Manager hire action
+        
+        # HIRING LOGIC
+        if queue_pressure > hire_threshold and current_profit > profit_threshold:
+            return 1  # Hire employee
+        
+        # FIRING LOGIC
+        if queue_pressure < fire_threshold and num_employees > min_staff:
+            # Only fire if losing money or clearly inefficient
+            if current_profit < 0 or profit_per_employee < 200:
+                return -1  # Fire employee
+        
+        if queue_pressure > hire_threshold or queue_length > 50:
+            return 1
+        # Buffer zone prevents rapid flip-flopping
+        
+        return 0  # No staffing change
 
     def _get_naive_layout_action(self, current_timestep) -> list:
         """
@@ -311,24 +385,74 @@ class SkeletonOptimizationAgent(BaselineAgent):
         - No consideration of order priority/value
         - Random assignments regardless of efficiency
         - Doesn't check if employees are actually available
+
+        WEEK 2 STEP 2: Worker-to-order matching optimization
+        Optimally match idle workers to pending orders
         """
         
-        # TODO WEEK 2 STEP 2: Students should implement intelligent order assignment
-        # Current approach: Random assignments
-        
-        assignments = [0] * 20  # No assignments by default
-        
-        # Count how many employees we have (very naive)
-        num_employees = int(np.sum(employee_info[:, 0] > 0))
-        
-        # Randomly assign first few orders to first few employees
-        if num_employees > 0:
-            for i in range(min(3, num_employees)):  # Only assign 3 orders max
-                if np.random.random() < 0.6:  # 60% chance to assign
-                    assignments[i] = (i % num_employees) + 1  # Random employee
-        
+        max_assignments = 20
+        assignments = [0] * max_assignments
+
+        # --- Step 1: Find idle, non-manager workers ---
+        idle_workers = [
+            i for i in range(len(employee_info))
+            if employee_info[i, 0] > 0       # active
+            and employee_info[i, 1] == 0     # idle
+            and employee_info[i, 5] == 0     # not manager
+        ]
+        if not idle_workers:
+            return assignments
+
+        # --- Step 2: Get pending orders ---
+        orders = queue_info.orders[:max_assignments]
+        if not orders:
+            return assignments
+
+        # --- Step 3: Build worker-order score list ---
+        grid = self.env.warehouse_grid
+        max_order_value = max(1, max(o.value for o in orders))
+        distance_weight = 0.7
+        value_weight = 0.3
+
+        scored_pairs = []  # (score, worker_idx, order_idx)
+
+        for w_idx in idle_workers:
+            wx, wy = int(employee_info[w_idx, 0]), int(employee_info[w_idx, 1])
+            for o_idx, order in enumerate(orders):
+                # Compute minimum Manhattan distance to any walkable adjacent cell of order items
+                min_dist = float("inf")
+                for item_id in order.items:
+                    for ix, iy in grid.find_item_locations(int(item_id)):
+                        adj_cells = [
+                            (ix + dx, iy + dy)
+                            for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]
+                            if grid.is_walkable(ix + dx, iy + dy)
+                        ]
+                        if adj_cells:
+                            min_dist = min(min_dist, min(grid.manhattan_distance((wx, wy), p) for p in adj_cells))
+                # Compute scores
+                distance_score = 1 / (1 + min_dist)
+                value_score = order.value / max_order_value
+                combined_score = distance_weight * distance_score + value_weight * value_score
+
+                scored_pairs.append((combined_score, w_idx, o_idx))
+
+        # --- Step 4: Greedy assignment ---
+        scored_pairs.sort(reverse=True)  # highest score first
+        assigned_workers = set()
+        assigned_orders = set()
+
+        for score, w_idx, o_idx in scored_pairs:
+            if w_idx in assigned_workers or o_idx in assigned_orders:
+                continue
+            assignments[o_idx] = w_idx + 1  # +1 because 0 = no assignment
+            assigned_workers.add(w_idx)
+            assigned_orders.add(o_idx)
+            if len(assigned_workers) >= len(idle_workers):
+                break  # all idle workers assigned
+
         return assignments
-    
+        
     def record_reward(self, reward: float):
         """
         WEEK 3 STEP 1: Reward tracking and learning - students should expand this
@@ -399,6 +523,48 @@ class SkeletonOptimizationAgent(BaselineAgent):
             recent_efficiency = np.mean([m['efficiency'] for m in self.layout_metrics[-10:]])
             print(f"Layout efficiency: {recent_efficiency:.3f}")
 
+
+    def _calculate_order_distance(self, worker_pos, order):
+        """
+        Calculate minimum Manhattan distance from worker to any item needed for this order.
+        Worker cannot stand on storage cells; compute distance to walkable adjacent cells.
+        """
+        grid = self.env.warehouse_grid
+        wx, wy = worker_pos
+        min_distance = float('inf')
+
+        for item_id in order.items:
+            # Get all storage locations for this item type
+            locations = grid.find_item_locations(int(item_id))
+            for ix, iy in locations:
+                # Consider only walkable adjacent cells
+                adj_cells = [
+                    (ix + dx, iy + dy)
+                    for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]
+                    if grid.is_walkable(ix + dx, iy + dy)
+                ]
+                if adj_cells:
+                    # Compute Manhattan distance to each adjacent cell
+                    min_distance = min(min_distance, min(grid.manhattan_distance((wx, wy), p) for p in adj_cells))
+
+        return min_distance if min_distance != float('inf') else 0
+
+
+    def _get_idle_workers(self, employee_info):
+        """
+        Identify workers available for order assignment.
+        Returns list of (worker_index, (x, y)) for idle workers that are not managers.
+        """
+        idle_workers = []
+        for i, emp in enumerate(employee_info):
+            active = emp[0] > 0          # Employee exists
+            idle = emp[1] == 0           # Currently idle
+            not_manager = emp[5] == 0    # Not a manager
+            if active and idle and not_manager:
+                x, y = int(emp[0]), int(emp[1])
+                idle_workers.append((i, (x, y)))
+        return idle_workers
+
     def _calculate_layout_efficiency(self):
         """
         Objective function evaluation for layout quality.
@@ -445,6 +611,18 @@ class SkeletonOptimizationAgent(BaselineAgent):
 
         return float(np.clip(efficiency, 0.0, 1.0))
 
+    def track_integrated_performance(self):
+        # Only calculate metrics, do not change self.env or actions
+        current_profit = self.env.cumulative_profit
+        num_employees = len(self.env.employees)
+        queue_length = len(self.env.order_queue.orders)
+        
+        self.integrated_metrics.append({
+            'timestep': self.env.current_timestep,
+            'profit_per_employee': current_profit / max(1, num_employees),
+            'queue_pressure': queue_length / max(1, num_employees)
+        })
+            
     def _count_frequency_swaps(self) -> int:
         """Return number of phase-1 (frequency) swaps executed."""
         return int(getattr(self, "phase1_swap_count", 0))
@@ -476,6 +654,8 @@ class StudentOptimizationAgent(SkeletonOptimizationAgent):
     def __init__(self, env):
         super().__init__(env)
         self.name = "StudentOptimization"
+        self.integrated_metrics = [] 
+
 
         # TODO: Students implement these
         # self.q_table = {}
